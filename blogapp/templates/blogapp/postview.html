@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %} {{ post.title }} {% endblock %}
+{% block header %} Post {% endblock %}
+
+{% block head_other %}
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row" style="margin-right: 1%; margin-left: 1%;">
+            <div class="col">
+                <!-- Title -->
+                <h1 class="mt-4">{{post.title}}</h1>
+
+                <!-- Author -->
+                <p class="lead">
+                    by {{ post.author}}
+                </p>
+        
+                <hr>
+        
+                <!-- Date/Time -->
+                <p>Posted on {{ post.post_date|date:'d F Y'}} at {{ post.post_date|date:'H:i' }}</p>
+        
+                <hr>
+
+                <p>
+                    {{ post.body|safe }}
+                </p>
+                <br/>
+    
+                <!-- Go Back -->
+                <div class="text-center">
+                    <a class="btn btn-primary mb-2" href="{% url 'blog:MainView' %}"> Go back </a>
+                    {% if post.author == request.user and not post.locked or request.user.is_superuser %}
+                        <a class="btn btn-primary mb-2" href="{% url 'blog:PostEditView' post.pk %}"> Edit Post</a>
+                    {% endif %}
+                </div>
+
+
+
+                <br>
+
+                <!-- Information: Your comment/like submitted -->
+                {% for message in messages %}
+                    <div class="alert alert-secondary" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
